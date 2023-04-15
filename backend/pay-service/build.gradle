@@ -36,6 +36,9 @@ dependencies {
 
 	// mysql
 	runtimeOnly 'com.mysql:mysql-connector-j'
+
+	testImplementation 'io.rest-assured:rest-assured:4.4.0'
+	implementation 'com.google.guava:guava:31.1-jre'
 }
 
 dependencyManagement {
