@@ -16,9 +16,17 @@ public class UserSteps {
                 .log().all().extract();
     }
 
+    public static AddUserRequest 유저생성요청_생성(final Long userId, final Integer deposit, final Integer prize) {
+        return new AddUserRequest(userId, deposit, prize);
+    }
     public static AddUserRequest 유저생성요청_생성() {
         final Long userId = 1L;
-        return new AddUserRequest(userId);
+        return 유저생성요청_생성(userId, 0, 0);
     }
 
+    public static ExtractableResponse<Response> 유저조회요청(long userId) {
+        return RestAssured.given().log().all()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when().get("/v2/users/{userId}", userId).then().log().all().extract();
+    }
 }

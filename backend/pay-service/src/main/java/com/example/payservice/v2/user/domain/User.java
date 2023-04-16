@@ -1,5 +1,6 @@
 package com.example.payservice.v2.user.domain;
 
+import com.example.payservice.common.util.V2;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,9 +12,9 @@ import javax.persistence.*;
 @Table(name = "users")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@V2
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Integer deposit;
     private Integer prize;

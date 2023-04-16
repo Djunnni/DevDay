@@ -14,4 +14,10 @@ public class AddUserRequest {
     @NotNull
     private Long userId;
 
+    @NotNull
+    private Integer deposit;
+
+    @NotNull
+    private Integer prize;
+
 }

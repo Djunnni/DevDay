@@ -2,11 +2,13 @@ package com.example.payservice.v2.user.adapter;
 
 import com.example.payservice.v2.user.application.port.UserPort;
 import com.example.payservice.v2.user.domain.User;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
+@Slf4j
 @Component
 public class UserAdapter implements UserPort {
 
@@ -18,8 +20,18 @@ public class UserAdapter implements UserPort {
     }
 
     @Override
-    public void save(User user) {
-        userRespository.save(user);
+    public User save(User user) {
+        Optional<User> existUser = userRespository.findById(user.getId());
+        if(existUser.isPresent()) {
+            log.info("이미 존재하는 유저입니다. 기존 유저 정보를 리턴합니다. -> userId : {}, deposit: {}, prize: {}",
+                    user.getId(),
+                    user.getDeposit(),
+                    user.getPrize()
+            );
+            return existUser.get();
+        }
+        User newUser = userRespository.save(user);
+        return newUser;
     }
 
     @Override

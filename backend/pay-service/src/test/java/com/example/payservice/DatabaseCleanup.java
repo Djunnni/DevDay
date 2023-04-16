@@ -1,5 +1,6 @@
 package com.example.payservice;
 
+import com.example.payservice.common.util.V2;
 import com.google.common.base.CaseFormat;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Component;
@@ -26,15 +27,19 @@ public class DatabaseCleanup implements InitializingBean {
     public void afterPropertiesSet() {
         final Set<EntityType<?>> entities = entityManager.getMetamodel().getEntities();
         tableNames = entities.stream()
-                .filter(e -> isEntity(e) && hasTableAnnotation(e))
+                .filter(e -> hasV2Annotation(e) && isEntity(e) && hasTableAnnotation(e))
                 .map(e -> e.getJavaType().getAnnotation(Table.class).name())
                 .collect(Collectors.toList());
 
         final List<String> entityNames = entities.stream()
-                .filter(e -> isEntity(e) && !hasTableAnnotation(e))
+                .filter(e -> hasV2Annotation(e) && isEntity(e) && !hasTableAnnotation(e))
                 .map(e -> CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, e.getName())).collect(Collectors.toList());
 
         tableNames.addAll(entityNames);
+    }
+
+    private boolean hasV2Annotation(EntityType<?> e) {
+        return null != e.getJavaType().getAnnotation(V2.class);
     }
 
     private boolean hasTableAnnotation(EntityType<?> e) {
